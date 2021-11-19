@@ -9,7 +9,7 @@ const MAX_VELIB = 3
 const Popup = () => {
 
   const { lon, lat } = useLocation()
-  const { closestStations, stationsInfo } = useVelibStations(lat, lon, MAX_VELIB)
+  const { closestStations, recommendedStations } = useVelibStations(lat, lon, MAX_VELIB)
 
   return (
     <div className="App">

@@ -19,8 +19,6 @@ export function useGeolocation() {
 export function useLocation() {
   const [location, setLocation] = useState(DEFAULT_LOCATION)
 
-  const userGeo = useGeolocation()
-
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       // since only one tab should be active and in the current window at once
@@ -30,16 +28,12 @@ export function useLocation() {
 
       if (url !== undefined && isGoogleAddress(url)) {
         setLocation(getAdresseCoordinates(url))
-      } else {
-        setLocation(userGeo)
       }
     })
 
     const onTabChange = (tabId, changeInfo) => {
       if (changeInfo.url !== undefined && isGoogleAddress(changeInfo.url)) {
         setLocation(getAdresseCoordinates(changeInfo.url))
-      } else {
-        setLocation(userGeo)
       }
     }
 
