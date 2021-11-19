@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
 
 export function useVelibStations(lat, lon, limit) {
-  const [stationsInfo, setStationsInfo] = useState({})
+  const [stationsInfo, setStationsInfo] = useState([])
+  const [recommendedStations, setRecommendedStations] = useState([])
 
   const closestStations = useClosestStations(lat, lon, limit)
 
@@ -11,15 +12,41 @@ export function useVelibStations(lat, lon, limit) {
       const station_ids = closestStations.map(s => s.station_id)
       const stations_info = await getStationsInfo(station_ids)
       setStationsInfo(stations_info)
+
+      const recommendedStations2 = getRecommendedStations(stations_info)
+      setRecommendedStations(recommendedStations2)
     }
     f()
   }, [closestStations])
 
+  console.log({ closestStations, recommendedStations })
+
   return {
     closestStations,
-    stationsInfo
+    stationsInfo,
+    recommendedStations
   }
 }
+
+function getRecommendedStations(stations) {
+  // const max_distance = 0.00001
+  // var filtered_station = stations.filter(s => ((s.is_renting = 1) && (s.is_returning = 1) && (s.is_renting = 1) && s.distance <= max_distance))
+
+  var scored_station = stations.map(function (s) {
+    var score = 0
+    capacity = s.num_bikes_available + s.num_docks_available
+
+    if (capacity <= 15) {
+      score = s.num_bikes_available
+    } else {
+      score = s.num_bikes_available / 2
+    }
+    s.score = score
+  })
+  scored_station.sort((a, b) => b.score - a.score)
+  return scored_station
+}
+
 
 export function useStations() {
   const [stations, setStations] = useState([])
