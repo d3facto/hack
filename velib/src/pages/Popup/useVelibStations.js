@@ -1,29 +1,66 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import axios from 'axios'
 
-const STATIONS = [{
-  station_id: 63279,
-  name: 'Siam - La Pompe',
-  lat: 48.861720329027264,
-  lon: 2.275346568555312,
-  capacity: 16,
-  stationCode: '16017',
-  distance: 0.000010876351452950346
-},
-{
-  station_id: 38407,
-  name: 'Flandrin - Longchamp',
-  lat: 48.86877849178477,
-  lon: 2.274354539176829,
-  capacity: 42,
-  stationCode: '16012',
-  rental_methods: ['CREDITCARD'],
-  distance: 0.000014693619841781265
-}]
+export function useVelibStations(lat, lon, limit) {
+  const [stationsInfo, setStationsInfo] = useState({})
 
-export function useVelibStations() {
-  const [stations, setStations] = useState(STATIONS)
+  const closestStations = useClosestStations(lat, lon, limit)
+
+  useEffect(() => {
+    const f = async () => {
+      const station_ids = closestStations.map(s => s.station_id)
+      const stations_info = await getStationsInfo(station_ids)
+      setStationsInfo(stations_info)
+    }
+    f()
+  }, [closestStations])
 
   return {
-    stations
+    closestStations,
+    stationsInfo
   }
+}
+
+export function useStations() {
+  const [stations, setStations] = useState([])
+
+  useEffect(() => {
+    const station_information = "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_information.json"
+    axios.get(station_information).then(response =>
+      setStations(response.data.data.stations)
+    )
+  }, [])
+  return stations
+}
+
+export function useClosestStations(lat, lon, limit) {
+  const stations = useStations()
+
+  const result = useMemo(() => {
+    const copy = [...stations]
+    copy.sort((a, b) => {
+      const distance_a = (lat - a.lat) ** 2 + (lon - a.lon) ** 2
+      const distance_b = (lat - b.lat) ** 2 + (lon - b.lon) ** 2
+      return distance_a - distance_b
+    });
+
+    return copy.slice(0, limit);
+  }, [stations, lat, lon, limit])
+
+  return result
+}
+
+async function getStationsInfo(station_ids) {
+  const velib_url = "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json"
+
+  const response = await axios.get(velib_url)
+  const val = response.data;
+  const result = [];
+  var stations = val.data.stations
+  for (const station of stations) {
+    if (station_ids.includes(station.station_id)) {
+      result[station.station_id] = station
+    }
+  }
+  return result
 }

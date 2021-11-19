@@ -1,6 +1,10 @@
 {
   "manifest_version": 3,
   "name": "Closest velibs",
+  "permissions": [
+    "geolocation",
+    "tabs"
+  ],
   "background": {
     "service_worker": "background.bundle.js"
   },
