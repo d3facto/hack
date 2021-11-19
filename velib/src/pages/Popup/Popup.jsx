@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from '../../assets/img/logo.svg';
-import Greetings from '../../containers/Greetings/Greetings';
+import logo from '../../assets/img/icon-128.png';
+import { useVelibStations } from './useVelibStations'
 import './Popup.css';
 
 const Popup = () => {
+
+  const { stations } = useVelibStations()
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/pages/Popup/Popup.jsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
+
+        <p>Found {stations.length} velib stations</p>
+        <p>The closest station to you is: {stations[0].name}</p>
+
       </header>
     </div>
   );
