@@ -3,11 +3,23 @@ import { useEffect, useState } from 'react'
 const DEFAULT_LOCATION = { lon: 48.865, lat: 2.275 }
 
 export function useGeolocation() {
+  const [location, setLocation] = useState(DEFAULT_LOCATION)
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        setLocation({ lon: position.coords.longitude, lat: position.coords.latitude })
+      })
+    }
+  }, [])
+
+  return location
 }
 
 export function useLocation() {
   const [location, setLocation] = useState(DEFAULT_LOCATION)
+
+  const userGeo = useGeolocation()
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -18,12 +30,16 @@ export function useLocation() {
 
       if (url !== undefined && isGoogleAddress(url)) {
         setLocation(getAdresseCoordinates(url))
+      } else {
+        setLocation(userGeo)
       }
     })
 
     const onTabChange = (tabId, changeInfo) => {
       if (changeInfo.url !== undefined && isGoogleAddress(changeInfo.url)) {
         setLocation(getAdresseCoordinates(changeInfo.url))
+      } else {
+        setLocation(userGeo)
       }
     }
 
