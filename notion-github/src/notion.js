@@ -18,7 +18,7 @@ async function listStastus(databaseId) {
         },
     });
     const { properties = [] } = response.data;
-    return properties.Status.select.options.map(option => option.name);
+    return properties.Status.select.options;
 }
 
 async function getPage(databaseId, githubLink) {
@@ -54,6 +54,27 @@ async function getPageStatus(pageId) {
 } 
 
 
+async function updatePageStatus(pageId, statusId) {
+    const url = `https://api.notion.com/v1/pages/${pageId}`;
+    const response = await axios.patch(url, {
+        properties: {
+            Status: {
+                select: {
+                    id: statusId
+                }
+            }
+        }
+    }, {
+        headers: {
+            Authorization: `Bearer ${CLIENT_SECRET}`,
+            "Notion-Version": "2021-08-16",
+            "Content-Type": "application/json"
+        }
+    });
+    return response.data;
+} 
+
+
 listStastus(databaseId).then((data) => {
     console.log(data);
 }).catch(error => console.log(error));
@@ -61,3 +82,4 @@ getPage(databaseId, null).then((data) => {
     console.log(data);
 }).catch(error => console.log(error));
 getPageStatus('a5c7feda4e084f0c82365bc0281b6797').then(data => console.log(data));
+updatePageStatus('a5c7feda4e084f0c82365bc0281b6797', '2').then(data => console.log(data));
