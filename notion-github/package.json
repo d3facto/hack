@@ -1,7 +1,7 @@
 {
-  "name": "chrome-extension-velib",
+  "name": "chrome-extension-notion-github",
   "version": "4.2.0",
-  "description": "A chrome extension that shows you how many velibs are in the closest stations",
+  "description": "A chrome extension that allows us to update notion tasks from github",
   "license": "MIT",
   "repository": {
     "type": "git",
