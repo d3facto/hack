@@ -1,7 +1,8 @@
-import test from './api';
+import {test, destpicker} from './api';
 
 function App() {
   const result = test();
+  const result2 = destpicker([], []);
   return (
     <div className="App">
       <header className="App-header">

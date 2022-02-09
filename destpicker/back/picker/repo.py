@@ -1,7 +1,7 @@
 from typing import Dict, List
 import googlemaps
 
-from picker.model import Destination, Journey, Participant
+from .model import Destination, Journey, Participant
 
 
 class Client:
