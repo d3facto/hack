@@ -15,7 +15,6 @@ function App() {
   const [transitSummary, setTransitSummary] = React.useState(null)
 
   const onSubmit = async (values) => {
-    console.log(values)
     setIsLoading(true)
     try {
       const destinations = values.destinations.map(d => ({ name: d.value, address: d.value }))
@@ -29,8 +28,6 @@ function App() {
       setIsLoading(false)
     }
   }
-
-  console.log(mode)
 
   return (
     <>
@@ -85,12 +82,14 @@ function App() {
 
                   <Title level={3}>Destination candidates</Title>
 
-                  <Radio.Group defaultValue="driving" style={{ marginTop: 16 }} onChange={e => setMode(e.target.value)}>
-                    <Radio.Button value="driving">🚗 Car</Radio.Button>
-                    <Radio.Button value="walking"> Walking</Radio.Button>
-                    <Radio.Button value="transit">Transit</Radio.Button>
-                    <Radio.Button value="bicycling">Bicycling</Radio.Button>
-                  </Radio.Group>
+                  <Form.Item label="Transport mode" name="mode">
+                    <Radio.Group defaultValue="driving" style={{ marginTop: 16 }} onChange={e => setMode(e.target.value)}>
+                      <Radio.Button value="driving">🚗 Car</Radio.Button>
+                      <Radio.Button value="walking">🚶 Walking</Radio.Button>
+                      <Radio.Button value="transit">🚌 Transit</Radio.Button>
+                      <Radio.Button value="bicycling">🚴‍♂️ Bicycling</Radio.Button>
+                    </Radio.Group>
+                  </Form.Item>
 
                   <Form.List name="destinations">
                     {(fields, { add, remove }) => (
