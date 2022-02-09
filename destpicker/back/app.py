@@ -20,6 +20,7 @@ def create_app(config: Dict[str, str] = None) -> Flask:
     def home():
         print("home")
         return "home"
+
     return app
 
 

@@ -1,4 +1,7 @@
+import test from './api';
+
 function App() {
+  const result = test();
   return (
     <div className="App">
       <header className="App-header">
