@@ -20,6 +20,7 @@ class Journey:
 
 @dataclass
 class TransitSummary:
+    destination: Destination
     averate_duration_second: int
     average_distance_meter: float
     max_duration_second: int
