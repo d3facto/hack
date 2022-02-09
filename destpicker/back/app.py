@@ -33,7 +33,7 @@ def create_app() -> Flask:
         print('data', data)
         participants = [Participant(**p) for p in data['participants']]
         destinations = [Destination(**d) for d in data['destinations']]
-        google_client = GoogleClient(key=settings.API_KEY)
+        google_client = GoogleClient(key=settings.API_KEY, mode='transit')
         result = order_possible_destinations(google_client, participants, destinations)
 
         # TODO serialize

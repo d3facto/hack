@@ -10,7 +10,7 @@ class Client:
 
 
 class GoogleClient(Client):
-    def __init__(self, key: str):
+    def __init__(self, key: str, mode: str):
         self.client = googlemaps.Client(key)
 
     def retrieve_journeys(self, participants: List[Participant], destinations: List[Destination]) -> List[Journey]:
