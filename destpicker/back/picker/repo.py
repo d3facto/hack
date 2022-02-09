@@ -12,12 +12,13 @@ class Client:
 class GoogleClient(Client):
     def __init__(self, key: str, mode: str):
         self.client = googlemaps.Client(key)
+        self.mode = mode
 
     def retrieve_journeys(self, participants: List[Participant], destinations: List[Destination]) -> List[Journey]:
         origins = [participant.address for participant in participants]
         dests = [destination.address for destination in destinations]
 
-        results = self.client.distance_matrix(origins, dests)
+        results = self.client.distance_matrix(origins, dests, self.mode)
 
         if results['status'] != 'OK': 
             raise Exception("google api returned an error", results)
