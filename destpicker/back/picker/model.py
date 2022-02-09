@@ -3,8 +3,8 @@ from typing import Dict, List
 
 @dataclass
 class Participant:
-    address: str
     name: str
+    address: str
 
 @dataclass
 class Destination:

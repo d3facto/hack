@@ -1,8 +1,7 @@
 from typing import Dict, List
 import googlemaps
-import pprint
 
-from destpicker.back.picker.model import Destination, Journey, Participant
+from picker.model import Destination, Journey, Participant
 
 
 class Client:
@@ -17,7 +16,7 @@ class GoogleClient():
         origins = [participant.address for participant in participants]
         dests = [destination.address for destination in destinations]
 
-        results = self.client.distance_matrix(origins, dests, self.mode)
+        results = self.client.distance_matrix(origins, dests)
 
         if results['status'] != 'OK': 
             raise Exception("google api returned an error", results)
@@ -31,7 +30,7 @@ class GoogleClient():
             for j, elt in enumerate(row["elements"]):
                 if elt['status'] != 'OK':
                     continue
-                journeys.append(Journey(participant=participants[i], destination=destinations[j], duration_second=['duration']['value'], distance_meter=elt['distance']['value']))
+                journeys.append(Journey(participant=participants[i], destination=destinations[j], duration_second=elt['duration']['value'], distance_meter=elt['distance']['value']))
 
         return journeys
             
