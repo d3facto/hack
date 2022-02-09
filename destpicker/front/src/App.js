@@ -11,7 +11,7 @@ const { Paragraph, Title } = Typography
 const EXAMPLE_API_RESULT = [
   {
     destination: { name: 'Chamonix', address: 'Chamonix' },
-    averate_duration_second: 1500,
+    average_duration_second: 1500,
     average_distance_meter: 1500,
     max_duration_second: 2000,
     max_distance_meter: 2000,
@@ -30,7 +30,7 @@ const EXAMPLE_API_RESULT = [
   },
   {
     destination: { name: 'Biarritz', address: 'Biarritz' },
-    averate_duration_second: 2500,
+    average_duration_second: 2500,
     average_distance_meter: 2500,
     max_duration_second: 3000,
     max_distance_meter: 3000,

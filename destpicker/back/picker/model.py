@@ -18,6 +18,7 @@ class Journey:
     distance_meter: int
     duration_second: int
 
+
 @dataclass
 class TransitSummary:
     destination: Destination
