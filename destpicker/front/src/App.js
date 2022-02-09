@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Button, Col, Form, Input, Row, Typography } from 'antd'
 
+import { Destinations } from './Destinations'
 import { destpicker } from './api'
 import './App.css'
 
