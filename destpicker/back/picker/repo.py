@@ -8,7 +8,8 @@ class Client:
     def retrieve_journeys(self, participants: List[Participant], destinations: List[Destination]):
         raise Exception("not implemented")
 
-class GoogleClient():
+
+class GoogleClient(Client):
     def __init__(self, key: str):
         self.client = googlemaps.Client(key)
 
@@ -33,4 +34,4 @@ class GoogleClient():
                 journeys.append(Journey(participant=participants[i], destination=destinations[j], duration_second=elt['duration']['value'], distance_meter=elt['distance']['value']))
 
         return journeys
-            
+
