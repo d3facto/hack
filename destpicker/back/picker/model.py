@@ -13,6 +13,8 @@ class Destination:
 
 @dataclass
 class Journey:
+    participant: Participant
+    destination: Destination
     distance_meter: int
     duration_second: int
 
@@ -22,6 +24,6 @@ class TransitSummary:
     average_distance_meter: float
     max_duration_second: int
     max_distance_meter: int
-    journeys : Dict[Participant, Journey]
+    journeys : List[Journey]
 
 

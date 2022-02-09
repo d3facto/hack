@@ -1,2 +1,3 @@
 Flask==1.1.4
 Flask-Cors==3.0.10
+googlemaps==4.6.0
