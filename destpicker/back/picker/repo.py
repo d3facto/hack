@@ -2,7 +2,7 @@ from typing import Dict, List
 import googlemaps
 import pprint
 
-from destpicker.back.picker.model import Destination, Journey, Participant
+from .model import Destination, Journey, Participant
 
 
 class Client:
