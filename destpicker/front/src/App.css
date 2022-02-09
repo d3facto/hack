@@ -12,6 +12,7 @@ body {
   background-color: white;
   padding: 24px;
   border-radius: 16px;
+  overflow-y: 'auto';
 }
 
 .defacto-img-background {
