@@ -8,7 +8,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 import settings
-from destpicker.back.picker.model import Participant, Destination
+from picker.model import Participant, Destination
 from picker.usecase import order_possible_destinations
 from picker.repo import GoogleClient
 
@@ -33,13 +33,14 @@ def create_app() -> Flask:
         print('data', data)
         participants = [Participant(**p) for p in data['participants']]
         destinations = [Destination(**d) for d in data['destinations']]
-        google_client = GoogleClient(key=settings.API_KEY, mode='transit')
+        mode = data.get("mode") or "transit"
+        google_client = GoogleClient(key=settings.API_KEY, mode=mode)
         result = order_possible_destinations(google_client, participants, destinations)
 
         # TODO serialize
         print(result)
 
-        return jsonify([j for j in asdict(result)])
+        return jsonify([asdict(j) for j in result])
 
     return app
 

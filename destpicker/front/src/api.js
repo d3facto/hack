@@ -8,15 +8,16 @@ export const test = () => {
 
 }
 
-export const destpicker = async (participants, destinations) => {
+export const destpicker = async (participants, destinations, mode) => {
     const options = {
         headers: {
             'Content-Type': 'application/json'
         }
     }
     const payload = {
-        'participants': participants,
-        'destinations': destinations
+        participants,
+        destinations,
+        mode
     }
     return await axios.post(`${URL}/destpicker`, payload, options)
 }

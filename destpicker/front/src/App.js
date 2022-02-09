@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Col, Form, Input, Row, Typography, Space, Spin } from 'antd'
+import { Button, Col, Form, Input, Row, Typography, Space, Spin, Radio } from 'antd'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { Destinations } from './Destinations'
@@ -10,12 +10,16 @@ import './App.css'
 const { Paragraph, Title } = Typography
 
 function App() {
+  const [mode, setMode] = React.useState('driving')
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [transitSummary, setTransitSummary] = React.useState(null)
+
   const onSubmit = async (values) => {
     console.log(values)
     setIsLoading(true)
     try {
       const destinations = values.destinations.map(d => ({ name: d.value, address: d.value }))
-      const response = await destpicker(values.participants, destinations)
+      const response = await destpicker(values.participants, destinations, mode)
       setTransitSummary(response.data)
       console.log({ apiData: response.data }) // TODO remove
     } catch (error) {
@@ -26,9 +30,7 @@ function App() {
     }
   }
 
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [transitSummary, setTransitSummary] = React.useState(null)
-
+  console.log(mode)
 
   return (
     <>
@@ -82,6 +84,13 @@ function App() {
                   </Form.List>
 
                   <Title level={3}>Destination candidates</Title>
+
+                  <Radio.Group defaultValue="driving" style={{ marginTop: 16 }} onChange={e => setMode(e.target.value)}>
+                    <Radio.Button value="driving">🚗 Car</Radio.Button>
+                    <Radio.Button value="walking"> Walking</Radio.Button>
+                    <Radio.Button value="transit">Transit</Radio.Button>
+                    <Radio.Button value="bicycling">Bicycling</Radio.Button>
+                  </Radio.Group>
 
                   <Form.List name="destinations">
                     {(fields, { add, remove }) => (
