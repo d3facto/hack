@@ -31,5 +31,5 @@ def _create_transit_summary_per_dest(journeys: List[Journey]) -> List[TransitSum
             destination=destandjour['destination'],
             journeys=journeys
         ))
-    return summaries
+    return sorted(summaries, key=lambda summary: summary.average_duration_second)
 
