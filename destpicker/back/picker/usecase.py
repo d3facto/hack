@@ -29,7 +29,7 @@ def _create_transit_summary_per_dest(journeys: List[Journey]) -> List[TransitSum
             max_duration_second=max(durations),
             max_distance_meter=max(distances),
             destination=destandjour['destination'],
-            journeys=journeys
+            journeys=destandjour['journeys']
         ))
     return sorted(summaries, key=lambda summary: summary.average_duration_second)
 

@@ -14,13 +14,13 @@ participants = [
 destinations = [
   Destination("Lyon", "Lyon"),
   Destination("Paris", "Paris"),
-  Destination("Limoges", "Limoges"),
-  Destination("Aurillac", "Aurillac"),
-  Destination("Clermont-Ferrand", "Clermont-Ferrand"),
-  Destination("Saint Etienne", "Saint-Etienne"),
-  Destination("Rodez", "Rodez"),
-  Destination("Brive-la-Gaillarde", "Brive-la-Gaillarde"),
-  Destination("Toulouse", "Toulouse"),
+#   Destination("Limoges", "Limoges"),
+#   Destination("Aurillac", "Aurillac"),
+#   Destination("Clermont-Ferrand", "Clermont-Ferrand"),
+#   Destination("Saint Etienne", "Saint-Etienne"),
+#   Destination("Rodez", "Rodez"),
+#   Destination("Brive-la-Gaillarde", "Brive-la-Gaillarde"),
+#   Destination("Toulouse", "Toulouse"),
 ]
 
 
