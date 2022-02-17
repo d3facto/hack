@@ -136,8 +136,7 @@ async def handler(websocket):
 
 
 async def main():
-    async with websockets.serve(handler, "localhost", 8765) as socket:
-        # ACTIVE_WEBSOCKETS.append(socket)
+    async with websockets.serve(handler, "localhost", 8765, origins=['*', None]) as socket:
         print('HANDLER')
         await asyncio.Future()  # run forever
 
