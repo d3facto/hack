@@ -1,11 +1,10 @@
-import React from 'react'
-import { Col, Row, Typography } from 'antd'
+import React from "react";
+import { Col, Row, Typography } from "antd";
 
-import { TicTacToe } from './TicTacToe'
+import "./App.css";
+import { TicTacToe } from "./TicTacToe";
 
-import './App.css'
-
-const { Title } = Typography
+const { Title } = Typography;
 
 function App() {
   return (
@@ -32,11 +31,11 @@ function App() {
         </Col> */}
       </Row>
     </>
-  )
+  );
 }
 
 function Card({ className, children }) {
-  return <div className={`${className} card`}>{children}</div>
+  return <div className={`${className} card`}>{children}</div>;
 }
 
-export default App
+export default App;
