@@ -67,6 +67,7 @@ async def start(websocket):
        # Send the secret access tokens to the browser of the first player,
        # where they'll be used for building "join" and "watch" links.
        event = {
+           "type": "join",
            "join_id": join_key
        }
        await websocket.send(json.dumps(event))
@@ -111,6 +112,7 @@ async def join(websocket, join_key):
     try:
         # Receive and process moves from the second player.
         event = {
+            "type": "join",
             "join_id": join_key
         }
         await websocket.send(json.dumps(event))
