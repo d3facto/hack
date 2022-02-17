@@ -35,7 +35,7 @@ const Board = ({ squares, onClick }) => {
 
 export const TicTacToe = () => {
   const { sendMessage, lastMessage } = useWebSocket(
-    "wss://echo.websocket.events"
+    "ws://localhost:3000/api"
   );
 
   const [state, setState] = useState({
@@ -49,22 +49,21 @@ export const TicTacToe = () => {
   });
 
   useEffect(() => {
-    if (lastMessage?.data && !lastMessage.data.includes("Lob.com")) {
-      setState(JSON.parse(lastMessage.data));
+    console.log(lastMessage)
+    if (lastMessage != null) {
+      if (lastMessage?.data) {
+        const message = JSON.parse(lastMessage.data)
+        switch (message.type) {
+          case "init":
+            console.log("Init game");
+            break;
+          case "play":
+            setState(message.payload);
+        }
+      }
+
     }
   }, [lastMessage]);
-
-  const importState = () => {
-    setState({
-      history: [
-        {
-          squares: ["X", "O", "X", null, null, null, null, null, null],
-        },
-      ],
-      stepNumber: 0,
-      xIsNext: true,
-    });
-  };
 
   const handleClick = (i) => {
     const history = state.history.slice(0, state.stepNumber + 1);
@@ -76,13 +75,16 @@ export const TicTacToe = () => {
     squares[i] = state.xIsNext ? "X" : "O";
     sendMessage(
       JSON.stringify({
-        history: history.concat([
-          {
-            squares: squares,
-          },
-        ]),
-        stepNumber: history.length,
-        xIsNext: !state.xIsNext,
+        type: "play",
+        payload: {
+          history: history.concat([
+            {
+              squares: squares,
+            },
+          ]),
+          stepNumber: history.length,
+          xIsNext: !state.xIsNext,
+        }
       })
     );
   };
@@ -122,9 +124,6 @@ export const TicTacToe = () => {
         <Board squares={current.squares} onClick={(i) => handleClick(i)} />
       </div>
       <div className="game-info">
-        <div>
-          <button onClick={importState}>Import state</button>
-        </div>
         <div>{status}</div>
         <ol>{moves}</ol>
       </div>
