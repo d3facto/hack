@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import useWebSocket from "react-use-websocket";
 
 const Square = (props) => (
   <button className="square" onClick={props.onClick}>
@@ -33,6 +34,10 @@ const Board = ({ squares, onClick }) => {
 };
 
 export const TicTacToe = () => {
+  const { sendMessage, lastMessage } = useWebSocket(
+    "wss://echo.websocket.events"
+  );
+
   const [state, setState] = useState({
     history: [
       {
@@ -42,6 +47,12 @@ export const TicTacToe = () => {
     stepNumber: 0,
     xIsNext: true,
   });
+
+  useEffect(() => {
+    if (lastMessage?.data && !lastMessage.data.includes("Lob.com")) {
+      setState(JSON.parse(lastMessage.data));
+    }
+  }, [lastMessage]);
 
   const importState = () => {
     setState({
@@ -63,22 +74,27 @@ export const TicTacToe = () => {
       return;
     }
     squares[i] = state.xIsNext ? "X" : "O";
-    console.log({
-      history: history.concat([
-        {
-          squares: squares,
-        },
-      ]),
-      stepNumber: history.length,
-      xIsNext: !state.xIsNext,
-    });
+    sendMessage(
+      JSON.stringify({
+        history: history.concat([
+          {
+            squares: squares,
+          },
+        ]),
+        stepNumber: history.length,
+        xIsNext: !state.xIsNext,
+      })
+    );
   };
 
   const jumpTo = (step) => {
-    setState({
-      stepNumber: step,
-      xIsNext: step % 2 === 0,
-    });
+    sendMessage(
+      JSON.stringify({
+        ...state,
+        stepNumber: step,
+        xIsNext: step % 2 === 0,
+      })
+    );
   };
   const history = state.history;
   const current = history[state.stepNumber];
