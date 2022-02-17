@@ -33,10 +33,8 @@ const Board = ({ squares, onClick }) => {
   );
 };
 
-export const TicTacToe = () => {
-  const { sendMessage, lastMessage } = useWebSocket(
-    "ws://localhost:3000/api"
-  );
+export const TicTacToe = ({ onWin }) => {
+  const { sendMessage, lastMessage } = useWebSocket("ws://localhost:3000/api");
 
   const [state, setState] = useState({
     history: [
@@ -49,19 +47,21 @@ export const TicTacToe = () => {
   });
 
   useEffect(() => {
-    console.log(lastMessage)
+    console.log(lastMessage);
     if (lastMessage != null) {
       if (lastMessage?.data) {
-        const message = JSON.parse(lastMessage.data)
+        const message = JSON.parse(lastMessage.data);
         switch (message.type) {
           case "init":
             console.log("Init game");
             break;
           case "play":
             setState(message.payload);
+            break;
+          default:
+            break;
         }
       }
-
     }
   }, [lastMessage]);
 
@@ -84,7 +84,7 @@ export const TicTacToe = () => {
           ]),
           stepNumber: history.length,
           xIsNext: !state.xIsNext,
-        }
+        },
       })
     );
   };
@@ -101,6 +101,12 @@ export const TicTacToe = () => {
   const history = state.history;
   const current = history[state.stepNumber];
   const winner = calculateWinner(current.squares);
+
+  useEffect(() => {
+    if (winner) {
+      onWin();
+    }
+  }, [winner, onWin]);
 
   const moves = history.map((step, move) => {
     const desc = move ? "Go to move #" + move : "Go to game start";

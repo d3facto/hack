@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Row, Typography } from "antd";
 
 import "./App.css";
 import { TicTacToe } from "./TicTacToe";
+import { Sprinkle } from "./Sprinkles";
 
 const { Title } = Typography;
 
 function App() {
+  const [showSprinkle, setShow] = useState(false);
+
+  useEffect(() => {
+    if (showSprinkle) {
+      setTimeout(() => {
+        setShow(false);
+      }, 2500);
+    }
+  }, [showSprinkle]);
+
+  const onWin = useCallback(() => setShow(true), []);
+
   return (
     <>
       <Row className="main-container" gutter={8}>
@@ -21,7 +34,7 @@ function App() {
             <Row className="margin-top-32">
               <Col span={24}>
                 <Title level={3}>Tic Tac Toe</Title>
-                <TicTacToe />
+                <TicTacToe onWin={onWin} />
               </Col>
             </Row>
           </Card>
@@ -30,6 +43,7 @@ function App() {
           <Card className="defacto-img-background" />
         </Col> */}
       </Row>
+      {showSprinkle && <Sprinkle />}
     </>
   );
 }
