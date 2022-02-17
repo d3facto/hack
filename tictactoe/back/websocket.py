@@ -67,8 +67,7 @@ async def start(websocket):
        # Send the secret access tokens to the browser of the first player,
        # where they'll be used for building "join" and "watch" links.
        event = {
-           "type": "init",
-           "join": join_key
+           "join_id": join_key
        }
        await websocket.send(json.dumps(event))
        # Receive and process moves from the first player.
@@ -111,6 +110,10 @@ async def join(websocket, join_key):
     connected.add(websocket)
     try:
         # Receive and process moves from the second player.
+        event = {
+            "join_id": join_key
+        }
+        await websocket.send(json.dumps(event))
         await play(websocket, connected)
     finally:
         connected.remove(websocket)
@@ -122,15 +125,15 @@ async def handler(websocket):
 
     """
     # # Receive and parse the "init" event from the UI.
-    # message = await websocket.recv()
-    # event =
+    message = await websocket.recv()
+    print()
+    event = json.loads(message)
     # join_key = event['gameId']
     # See the first message
-    if len(JOIN) == 0:
-        print('HEREEEEE')
+    if len(JOIN) == 0 or event["type"] == "new":
         await start(websocket)
-    else:
-        join_key = list(JOIN.keys())[0]
+    elif event["type"] == "join":
+        join_key = event.get("id", list(JOIN.keys())[0])
         print('JOIN KEY', join_key)
         await join(websocket, join_key)
 
