@@ -45,3 +45,26 @@ USER_SAMPLE = {
         "image": "https://dgalywyr863hv.cloudfront.net/pictures/clubs/293247/6587285/9/large.jpg"
     }
 }
+
+USER_STATS = {
+    'biggest_ride_distance': 258075.0,
+    'biggest_climb_elevation_gain': 1609.8000000000002,
+    'recent_ride_totals': {'count': 0, 'distance': 0.0, 'moving_time': 0, 'elapsed_time': 0,
+                                     'elevation_gain': 0.0, 'achievement_count': 0},
+    'all_ride_totals': {'count': 129, 'distance': 2713120, 'moving_time': 469666, 'elapsed_time': 23934738,
+                                  'elevation_gain': 22559},
+    'recent_run_totals': {'count': 11, 'distance': 161164.208984375, 'moving_time': 50202,
+                          'elapsed_time': 50802, 'elevation_gain': 1641.0, 'achievement_count': 47},
+    'all_run_totals': {'count': 540, 'distance': 6330836, 'moving_time': 2028124, 'elapsed_time': 2074722,
+                       'elevation_gain': 69784},
+    'recent_swim_totals': {'count': 0, 'distance': 0.0, 'moving_time': 0, 'elapsed_time': 0,
+                           'elevation_gain': 0.0, 'achievement_count': 0},
+    'all_swim_totals': {'count': 23, 'distance': 41172, 'moving_time': 59402, 'elapsed_time': 64566,
+                        'elevation_gain': 0},
+    'ytd_ride_totals': {'count': 4, 'distance': 47271, 'moving_time': 10662, 'elapsed_time': 10876,
+                        'elevation_gain': 310},
+    'ytd_run_totals': {'count': 68, 'distance': 931541, 'moving_time': 284660, 'elapsed_time': 289408,
+                       'elevation_gain': 9293},
+    'ytd_swim_totals': {'count': 1, 'distance': 1000, 'moving_time': 2125, 'elapsed_time': 2176,
+                        'elevation_gain': 0}
+}
