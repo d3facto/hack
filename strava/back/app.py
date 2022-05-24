@@ -134,7 +134,8 @@ def create_app() -> Flask:
 
     @app.route("/users", methods=["GET"])
     def users():
-        users = [USER_SAMPLE]
+        users = load_users()
+
         return jsonify(users)
 
     @app.route("/user/<user_id>", methods=["GET"])
