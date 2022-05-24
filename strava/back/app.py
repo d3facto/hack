@@ -15,7 +15,7 @@ STRAVA_CLIENT_SECRET = os.environ.get("STRAVA_CLIENT_SECRET")
 STRAVA_AUTHORIZATION_URL = "https://www.strava.com/oauth/authorize"
 STRAVA_TOKEN_ENDPOINT = "https://www.strava.com/oauth/token"
 
-FRONTEND_URL = "http://localhost:3000/"
+FRONTEND_URL = os.environ.get("FRONTEND_URL")
 
 
 def create_app() -> Flask:
