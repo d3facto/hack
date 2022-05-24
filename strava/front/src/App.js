@@ -27,13 +27,13 @@ function App() {
   }, [])
 
   if (loading)
-    return <h1>Loading</h1>
+    return <div className='flex-container'><h1>Loading 🧱 Hold tight.</h1></div>
 
   return (
     <div style={{ backgroundColor: '#fffe72', height: '100%' }}>
       <Header connected={connected}></Header>
       <div style={{ 'textAlign': 'center' }}>
-        { connected ? <h1 style={{ 'marginTop': 40 }}>Hello, {connected.firstname} {connected.lastname} ! Ready to Strinder ?</h1> : '' }
+        { connected ? <h1 style={{ 'marginTop': 40 }}>Hello, {connected.firstname} {connected.lastname} ! Ready to Strinder 😍 ?</h1> : '' }
       </div>
       <div className="flex-container">
         <Swiper users={users}></Swiper>
