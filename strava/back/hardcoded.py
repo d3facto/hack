@@ -41,6 +41,7 @@ USER_SAMPLE = {
     } ],
     "defacto": {
         "token": 1234,
-        "refresh_token": 1234
+        "refresh_token": 1234,
+        "image": "https://dgalywyr863hv.cloudfront.net/pictures/clubs/293247/6587285/9/large.jpg"
     }
 }
