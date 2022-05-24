@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from oauthlib.oauth2 import WebApplicationClient
-
+from dotenv import load_dotenv
 from hardcoded import USER_SAMPLE
 
 STRAVA_CLIENT_ID = os.environ.get("STRAVA_CLIENT_ID")
@@ -93,8 +93,19 @@ def create_app() -> Flask:
         ]
         return jsonify(users)
 
+    @app.route("/user/<user_id>", methods=['GET'])
+    def user(user_id: str):
+        users = [
+            USER_SAMPLE
+        ]
+        for u in users:
+            if str(u['id']) == str(user_id):
+                return jsonify(u)
+        return jsonify({})
+
     return app
 
 
 if __name__ == "__main__":
+    load_dotenv()
     create_app().run(debug=True, host="0.0.0.0", port=8080)
