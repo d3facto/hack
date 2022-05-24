@@ -1,8 +1,10 @@
 
 
 # TODO: create a dedicated type object for config
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
+
+from hardcoded import USER_SAMPLE
 
 
 def create_app() -> Flask:
@@ -18,6 +20,13 @@ def create_app() -> Flask:
     def home():
         print("home")
         return "home"
+
+    @app.route("/users", methods=['GET'])
+    def users():
+        users = [
+            USER_SAMPLE
+        ]
+        return jsonify(users)
 
     return app
 
