@@ -12,7 +12,11 @@ export const Card = ({ id, defacto, firstname, lastname }) => {
 
 
 export const Swiper = ({ users }) => {
-    return <TinderCard>
-        { users.map((u) => <Card {...u} key={u.id} />) }
-    </TinderCard>
+    return (<>
+        { users.map((u) => (
+          <div style={{ display: 'inline-block', position: 'absolute'}}>
+            <TinderCard><Card {...u} key={u.id} /></TinderCard>
+          </div>
+        )) }
+      </>)
 }
