@@ -4,6 +4,7 @@ import os
 from typing import Any
 
 import requests
+from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, request, url_for
 from flask_cors import CORS
 from flask_login import (
@@ -27,14 +28,18 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL")
 USERS_DB: str = os.environ.get("USERS_DB", "users.json")
 
 
-def save_user(athlete: dict[str, Any], defacto: dict[str, str]) -> None:
+def load_users() -> list[dict[str, Any]]:
     try:
         with open(USERS_DB, "r") as f:
-            users = json.load(f)
-
-            users = [u for u in users if u["id"] != athlete["id"]]
+            return json.load(f)
     except FileNotFoundError:
-        users = []
+        return []
+
+
+def save_user(athlete: dict[str, Any], defacto: dict[str, str]) -> None:
+    users = load_users()
+
+    users = [u for u in users if u["id"] != athlete["id"]]
 
     athlete["defacto"] = defacto
 
@@ -132,12 +137,21 @@ def create_app() -> Flask:
         users = [USER_SAMPLE]
         return jsonify(users)
 
+    @app.route("/user/<user_id>", methods=["GET"])
+    def user(user_id: str):
+        with open(USERS_DB, "r+") as f:
+            users = json.load(f)
+
+        for u in users:
+            if str(u["id"]) == str(user_id):
+                return jsonify(u)
+
+        return jsonify({})
+
     return app
 
 
 if __name__ == "__main__":
-    # create_app().run(debug=True, host="0.0.0.0", port=8080)
-    athlete = {}
-    defacto = {}
+    load_dotenv()
 
-    save_user(athlete=athlete, defacto=defacto)
+    create_app().run(debug=True, host="0.0.0.0", port=8080)

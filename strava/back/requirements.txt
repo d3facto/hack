@@ -8,3 +8,4 @@ python-dotenv==0.20.0
 requests==2.27.1
 markupsafe==2.0.1
 requests
+python-dotenv
