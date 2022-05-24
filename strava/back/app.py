@@ -2,7 +2,7 @@
 import os
 
 import requests
-from flask import Flask, redirect, request, url_for
+from flask import Flask, jsonify, redirect, request, url_for
 from flask_cors import CORS
 from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
@@ -12,6 +12,8 @@ STRAVA_CLIENT_ID = os.environ.get("STRAVA_CLIENT_ID")
 STRAVA_CLIENT_SECRET = os.environ.get("STRAVA_CLIENT_SECRET")
 STRAVA_AUTHORIZATION_URL = "https://www.strava.com/oauth/authorize"
 STRAVA_TOKEN_ENDPOINT = "https://www.strava.com/oauth/token"
+
+from hardcoded import USER_SAMPLE
 
 
 def create_app() -> Flask:
@@ -77,6 +79,13 @@ def create_app() -> Flask:
     def home():
         print("home")
         return "home"
+
+    @app.route("/users", methods=['GET'])
+    def users():
+        users = [
+            USER_SAMPLE
+        ]
+        return jsonify(users)
 
     return app
 
