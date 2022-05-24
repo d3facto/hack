@@ -1,5 +1,11 @@
 import axios from 'axios';
-const URL = 'http://0.0.0.0:5000/'
+import configuration from './constants'
+const URL = configuration.API_URL
+
+export const get_user = async (user_id) => {
+    const users = await axios.get(`${URL}/user/${user_id}`)
+    return users.data
+}
 
 export const get_users = async () => {
     const users = await axios.get(`${URL}/users`)
