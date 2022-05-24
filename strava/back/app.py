@@ -8,12 +8,14 @@ from flask_login import (LoginManager, current_user, login_required,
                          login_user, logout_user)
 from oauthlib.oauth2 import WebApplicationClient
 
+from hardcoded import USER_SAMPLE
+
 STRAVA_CLIENT_ID = os.environ.get("STRAVA_CLIENT_ID")
 STRAVA_CLIENT_SECRET = os.environ.get("STRAVA_CLIENT_SECRET")
 STRAVA_AUTHORIZATION_URL = "https://www.strava.com/oauth/authorize"
 STRAVA_TOKEN_ENDPOINT = "https://www.strava.com/oauth/token"
 
-from hardcoded import USER_SAMPLE
+FRONTEND_URL = "http://localhost:3000/"
 
 
 def create_app() -> Flask:
@@ -66,9 +68,13 @@ def create_app() -> Flask:
             auth=(STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET),
         )
 
-        app.logger.info(f"Received {token_response.json()}")
+        res = token_response.json()
 
-        return token_response.json()
+        app.logger.info(f"Received {res}")
+
+        user_id = res["athlete"]["id"]
+
+        return redirect(f"{FRONTEND_URL}?user_id={user_id}")
 
     @app.route("/ping")
     def ping():
