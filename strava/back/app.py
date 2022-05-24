@@ -1,13 +1,21 @@
 # TODO: create a dedicated type object for config
+import json
 import os
+from typing import Any
 
 import requests
+from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, request, url_for
 from flask_cors import CORS
-from flask_login import (LoginManager, current_user, login_required,
-                         login_user, logout_user)
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
 from oauthlib.oauth2 import WebApplicationClient
-from dotenv import load_dotenv
+
 from hardcoded import USER_SAMPLE
 
 STRAVA_CLIENT_ID = os.environ.get("STRAVA_CLIENT_ID")
@@ -15,7 +23,32 @@ STRAVA_CLIENT_SECRET = os.environ.get("STRAVA_CLIENT_SECRET")
 STRAVA_AUTHORIZATION_URL = "https://www.strava.com/oauth/authorize"
 STRAVA_TOKEN_ENDPOINT = "https://www.strava.com/oauth/token"
 
-FRONTEND_URL = "http://localhost:3000/"
+FRONTEND_URL = os.environ.get("FRONTEND_URL")
+
+USERS_DB: str = os.environ.get("USERS_DB", "users.json")
+
+
+def load_users() -> list[dict[str, Any]]:
+    try:
+        with open(USERS_DB, "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+
+def save_user(athlete: dict[str, Any], defacto: dict[str, str]) -> None:
+    users = load_users()
+
+    users = [u for u in users if u["id"] != athlete["id"]]
+
+    athlete["defacto"] = defacto
+
+    users.append(athlete)
+
+    with open(USERS_DB, "w") as f:
+        json.dump(users, f)
+
+        return None
 
 
 def create_app() -> Flask:
@@ -49,7 +82,7 @@ def create_app() -> Flask:
             STRAVA_TOKEN_ENDPOINT,
             authorization_response=request.url.replace("http", "https"),
             redirect_url=request.base_url.replace("http", "https"),
-            code=code
+            code=code,
         )
 
         params = {
@@ -59,7 +92,10 @@ def create_app() -> Flask:
             "grant_type": "authorization_code",
         }
 
-        app.logger.info(f"Getting token and refresh token from {token_url} with headers {headers} and data {body}")
+        app.logger.info(
+            f"Getting token and refresh token from {token_url} "
+            f"with headers {headers} and data {body}"
+        )
 
         token_response = requests.post(
             token_url,
@@ -72,7 +108,17 @@ def create_app() -> Flask:
 
         app.logger.info(f"Received {res}")
 
-        user_id = res["athlete"]["id"]
+        athlete = res["athlete"]
+
+        save_user(
+            athlete=athlete,
+            defacto={
+                "access_token": res["access_token"],
+                "refresh_token": res["refresh_token"],
+            },
+        )
+
+        user_id = athlete["id"]
 
         return redirect(f"{FRONTEND_URL}?user_id={user_id}")
 
@@ -86,21 +132,20 @@ def create_app() -> Flask:
         print("home")
         return "home"
 
-    @app.route("/users", methods=['GET'])
+    @app.route("/users", methods=["GET"])
     def users():
-        users = [
-            USER_SAMPLE
-        ]
+        users = [USER_SAMPLE]
         return jsonify(users)
 
-    @app.route("/user/<user_id>", methods=['GET'])
+    @app.route("/user/<user_id>", methods=["GET"])
     def user(user_id: str):
-        users = [
-            USER_SAMPLE
-        ]
+        with open(USERS_DB, "r+") as f:
+            users = json.load(f)
+
         for u in users:
-            if str(u['id']) == str(user_id):
+            if str(u["id"]) == str(user_id):
                 return jsonify(u)
+
         return jsonify({})
 
     return app
@@ -108,4 +153,5 @@ def create_app() -> Flask:
 
 if __name__ == "__main__":
     load_dotenv()
+
     create_app().run(debug=True, host="0.0.0.0", port=8080)
