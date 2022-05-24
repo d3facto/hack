@@ -8,6 +8,7 @@ import { get_connected_user_id, has_connected_user } from './utils'
 function App() {
   const [ loading, setLoading ] = useState(true)
   const [ users, setUsers ] = useState(null)
+  const [ error, setError ] = useState(null)
   const [ connected, setConnected ] = useState(null)
   
 
@@ -24,8 +25,13 @@ function App() {
       setConnected(user)
       setLoading(false)
     })
+    .catch(() => {
+      setError(true)
+    })
   }, [])
 
+  if (error)
+    return <div className='flex-container'><h1>Oops. Failed to load data from API 🥲</h1></div>
   if (loading)
     return <div className='flex-container'><h1>Loading 🧱 Hold tight.</h1></div>
 
