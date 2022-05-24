@@ -42,7 +42,7 @@ function App() {
         { connected ? <h1 style={{ 'marginTop': 40 }}>Hello, {connected.firstname} {connected.lastname} ! Ready to Strinder 😍 ?</h1> : '' }
       </div>
       <div className="flex-container">
-        <Swiper users={users}></Swiper>
+        { connected ? <Swiper users={users}></Swiper> : <h1>Please connect 😎</h1> }
       </div>
     </div>
   )
