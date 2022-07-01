@@ -2,7 +2,7 @@
   "name": "Defacto",
   "description": "Embed Defacto!",
   "version": "1.0",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "icons": {
     "16": "/images/get_started16.png",
     "32": "/images/get_started32.png",
@@ -11,9 +11,9 @@
   },
   "content_scripts": [
     {
-      "run_at": "document_idle",
+      "run_at": "document_start",
       "matches": [
-        "https://societe.com/*"
+        "https://www.societe.com/*"
       ],
       "js": [
         "scripts/content.js",
@@ -21,9 +21,9 @@
       ]
     }
   ],
-  "permissions": ["https://societe.com/*"],
+  "permissions": ["https://www.societe.com/*"],
   "web_accessible_resources": [
-    "iframe.html",
-    "scripts/iframe.js"
+    {"resources": ["iframe.html"], "matches": ["<all_urls>"]},
+    {"resources": ["scripts/iframe.js"], "matches": ["<all_urls>"]}
   ]
 }
