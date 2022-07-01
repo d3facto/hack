@@ -12,6 +12,9 @@ function Widget(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isEligible, setIsEligible] = useState(null);
     const [maxAmount, setMaxAmount] = useState(null)
+    const [reasons, setReasons] = useState(null)
+
+
 
     useEffect(() => {
         (async () => {
@@ -37,6 +40,7 @@ function Widget(props) {
                 const content = await response.json()
                 setIsEligible(content.is_eligible)
                 setMaxAmount(content.max_amount)
+                setReasons(content.reasons)
             }
 
         })()
@@ -60,6 +64,15 @@ function Widget(props) {
             <TextField id="outlined-basic" label="Outlined" variant="outlined" value={maxAmount}/>
         </div>
         )
+    }
+    else {
+        return(
+            <div>
+                <div>Unfortunately, You are not ELIGIBLE to a loan</div>
+                <TextField id="outlined-basic" label="Outlined" variant="outlined" value={reasons}/>
+            </div>
+            )
+
     }
 }
 
