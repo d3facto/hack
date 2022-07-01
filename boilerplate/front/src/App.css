@@ -1,0 +1,26 @@
+body {
+  background-color: black;
+}
+
+.main-container {
+  background-color: black;
+  padding: 6px;
+}
+
+.card {
+  height: calc(100vh - 12px);
+  background-color: white;
+  padding: 24px;
+  border-radius: 16px;
+  overflow: 'auto';
+}
+
+.defacto-img-background {
+  background-image: url(https://deploy-preview-121--silly-haibt-5e434c.netlify.app/static/media/defacto-insign.38c09dad.jpg);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.margin-top-32 {
+  margin-top: 32px;
+}
