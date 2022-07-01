@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import TextField from "@material-ui/core/TextField";
+
 
 const API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY2ODE0MTksIm5iZiI6MTY1NjY4MTQxOSwianRpIjoiYmZhZGNmZDMtMDJhMS00N2FmLThmMDItMWY4ZTQwNTA1NGQ1IiwiaWRlbnRpdHkiOnsiZW1haWwiOm51bGwsInRlbmFudCI6IndoZWF0IiwiaXNfc3VwZXIiOmZhbHNlLCJzY29wZXMiOlsiYXBpIl0sImlkIjpudWxsfX0.YwRlSnu3TAzpy6GGy4fXqArMRMvbYK8ZzW2gYqrnPe8";
 
@@ -45,12 +47,19 @@ function Widget(props) {
     if (isError) {
         return (<div>Ouch.. we have a technical error. We are working on it, please come back in a few minutes.</div>)
     }
+
+
     if (isLoading) {
         return (<div>Loading data for SIREN {siren}</div>)
     }
     
     if (isEligible) {
-        return (<div>You are ELIGIBLE! You can borrow {maxAmount}</div>)
+        return(
+        <div>
+            <div>You are ELIGIBLE! You can borrow</div>
+            <TextField id="outlined-basic" label="Outlined" variant="outlined" value={maxAmount}/>
+        </div>
+        )
     }
 }
 
